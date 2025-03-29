@@ -2,9 +2,12 @@
 
 namespace Database\Seeders;
 
+use App\Models\LoaiTin;
+use App\Models\QuanTriVien;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,11 +16,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        QuanTriVien::create([
+            'tendangnhap' => 'admin',
+            'matkhau' => Hash::make('123'),
+            'ten_qtv' => 'Admin'
+        ]);
+        $this->call([
+            LoaiTinSeeder::class,
+            TinSeeder::class
         ]);
     }
 }
