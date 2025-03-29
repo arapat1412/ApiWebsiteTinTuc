@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Tin;
 use Illuminate\Http\Request;
 
-class TinController extends Controller
+class TinController 
 {
     public function danhSachTin(Request $request)
     {
