@@ -4,7 +4,7 @@ use App\Http\Controllers\ReturnDanhSachController;
 use App\Http\Controllers\TinController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NhomTinController;
-use App\Http\Controllers\API\ChiTietTinTheoIDController;
+use App\Http\Controllers\ChiTietTinTheoIDController;
 
 
 Route::get('/trangchu', [ReturnDanhSachController::class, 'getDuLieuChoTrangChu']);
