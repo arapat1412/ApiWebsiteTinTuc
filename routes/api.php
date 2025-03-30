@@ -17,3 +17,10 @@ Route::get('nhomtin', [NhomTinController::class, 'index']);
 Route::post('themnhomtin', [NhomTinController::class, 'store']);
 Route::put('suanhomtin/{id}', [NhomTinController::class, 'update']);
 Route::delete('xoanhomtin/{id}', [NhomTinController::class, 'destroy']);
+
+
+//Loai Tin 
+Route::get('/loai-tin', [LoaiTinController::class, 'danhSachLoaiTin']);
+Route::post('/loai-tin', [LoaiTinController::class, 'themLoaiTin']);
+Route::put('/loai-tin/{id}', [LoaiTinController::class, 'suaLoaiTin']);
+Route::delete('/loai-tin/{id}', [LoaiTinController::class, 'xoaLoaiTin']);
