@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Tin;
@@ -23,8 +23,8 @@ class ChiTietTinTheoIDController extends Controller
             ], 400);
         }
 
-        // Tìm tin tức theo ID
-        $tin = Tin::find($id);
+        // Tìm tin tức theo ID, đồng thời lấy thông tin loại tin và nhóm tin
+        $tin = Tin::with(['loaiTin', 'nhomTin'])->find($id);
 
         // Kiểm tra nếu không tìm thấy tin tức
         if (!$tin) {
@@ -34,7 +34,7 @@ class ChiTietTinTheoIDController extends Controller
             ], 404);
         }
 
-        // Trả về JSON chứa thông tin tin tức
+        // Trả về JSON chứa thông tin tin tức, loại tin và nhóm tin
         return response()->json([
             'success' => true,
             'data' => $tin
