@@ -6,12 +6,15 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NhomTinController;
 use App\Http\Controllers\LoaiTinController;
 use App\Http\Controllers\ChiTietTinTheoIDController;
+use App\Http\Controllers\ChiTietTinController;
 
 
 Route::get('/trangchu', [ReturnDanhSachController::class, 'getDuLieuChoTrangChu']);
 //api trả về ds tin tức theo id nhóm tin hoặc loại tin
 Route::get('/tintuc', [TinController::class, 'danhSachTin']);
 Route::get('/chitiettin/{id}', [ChiTietTinTheoIDController::class, 'layChiTietTin']);
+
+
 
 
 
