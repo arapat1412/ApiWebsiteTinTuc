@@ -1,43 +1,50 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Models;
 
-use App\Http\Controllers\Controller;
-use App\Models\Tin;
-use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Model;
 
-class ChiTietTinTheoIDController extends Controller
+class Tin extends Model
 {
-    /**
-     * API lấy chi tiết tin tức theo id_tin
-     * @param int $id
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function layChiTietTin($id)
+
+    protected $table = 'tin'; // Tên bảng trong database
+    protected $primaryKey = 'id_tin'; // Khóa chính của bảng
+    public $timestamps = false; // Bảng không có cột created_at & updated_at
+
+    protected $fillable = [
+        'tieude',
+        'hinhdaidien',
+        'mota',
+        'noidung',
+        'ngaydangtin',
+        'tacgia',
+        'solanxem',
+        'tinhot',
+        'trangthai',
+        'id_loaitin'
+    ];
+
+    protected $casts = [
+        'tinhot' => 'boolean',
+        'trangthai' => 'boolean',
+        'ngaydangtin' => 'datetime',
+    ];
+
+    // Định nghĩa quan hệ với bảng `loai_tin`
+    public function loaiTin()
     {
-        // Kiểm tra ID hợp lệ (phải là số nguyên dương)
-        if (!is_numeric($id) || $id <= 0) {
-            return response()->json([
-                'success' => false,
-                'message' => 'ID không hợp lệ'
-            ], 400);
-        }
-
-        // Tìm tin tức theo ID, đồng thời lấy thông tin loại tin và nhóm tin
-        $tin = Tin::with(['loaiTin', 'nhomTin'])->find($id);
-
-        // Kiểm tra nếu không tìm thấy tin tức
-        if (!$tin) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Tin tức không tồn tại'
-            ], 404);
-        }
-
-        // Trả về JSON chứa thông tin tin tức, loại tin và nhóm tin
-        return response()->json([
-            'success' => true,
-            'data' => $tin
-        ]);
+        return $this->belongsTo(LoaiTin::class, 'id_loaitin', 'id_loaitin');
+    }
+    // Định nghĩa quan hệ gián tiếp với bảng `nhom_tin` thông qua `loai_tin`
+    public function nhomTin()
+    {
+        return $this->hasOneThrough(
+            NhomTin::class, // Model đích
+            LoaiTin::class, // Model trung gian
+            'id_loaitin',   // Khóa ngoại trong bảng `loai_tin`
+            'id_nhomtin',   // Khóa ngoại trong bảng `nhom_tin`
+            'id_loaitin',   // Khóa chính của bảng `tin`
+            'id_nhomtin'    // Khóa chính của bảng `loai_tin`
+        );
     }
 }
