@@ -7,6 +7,7 @@ use App\Http\Controllers\NhomTinController;
 use App\Http\Controllers\LoaiTinController;
 use App\Http\Controllers\ChiTietTinTheoIDController;
 use App\Http\Controllers\ChiTietTinController;
+use App\Http\Controllers\BinhLuanController;
 
 
 Route::get('/trangchu', [ReturnDanhSachController::class, 'getDuLieuChoTrangChu']);
@@ -29,3 +30,9 @@ Route::get('/loaitin', [LoaiTinController::class, 'danhSachLoaiTin']);
 Route::post('/themloaitin', [LoaiTinController::class, 'themLoaiTin']);
 Route::put('/sualoaitin/{id}', [LoaiTinController::class, 'suaLoaiTin']);
 Route::delete('/xoaloaitin/{id}', [LoaiTinController::class, 'xoaLoaiTin']);
+
+
+//api binhluan
+Route::get('/binhluan', [BinhLuanController::class, 'getBinhLuan']);
+Route::post('/binhluan', [BinhLuanController::class, 'postBinhLuan']);
+Route::put('/binhluan/{id}', [BinhLuanController::class, 'putBinhLuan']);
