@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\LoaiTin;
 use App\Models\Tin;
-use App\Models\TinTuc;
 use Illuminate\Http\Request;
+use App\Helpers\MyHelper; // Import helper
+use App\Models\BinhLuan;
 
 class TinController
 {
@@ -32,5 +33,135 @@ class TinController
         }
 
         return response()->json($tinTuc);
+    }
+
+    // Thêm tin mới
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'tieude' => 'required|string|max:255',
+            'hinhdaidien' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'mota' => 'required|string|max:255',
+            'noidung' => 'required|string',
+            'ngaydangtin' => 'required|date',
+            'tacgia' => 'required|string|max:255',
+            'tinhot' => 'required|boolean',
+            'trangthai' => 'required|boolean',
+            'id_loaitin' => 'required|integer|exists:loai_tin,id_loaitin',
+        ]);
+
+        try {
+            $path = $request->file('hinhdaidien')->getRealPath();
+            $validated['hinhdaidien'] = MyHelper::uploadImage($path);
+            $tin = Tin::create($validated);
+            return response()->json(['message' => 'Tin đã được thêm thành công!', 'tin' => $tin], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Lỗi khi upload ảnh',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    // Sửa tin
+    public function update(Request $request, $id_tin)
+    {
+        $tin = Tin::find($id_tin);
+
+        if (!$tin) {
+            return response()->json(['message' => 'Không tìm thấy tin.'], 404);
+        }
+
+        $validated = $request->validate([
+            'tieude' => 'required|string|max:255',
+            'hinhdaidien' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'mota' => 'required|string|max:255',
+            'noidung' => 'required|string',
+            'ngaydangtin' => 'required|date',
+            'tacgia' => 'required|string|max:255',
+            'tinhot' => 'required|boolean',
+            'trangthai' => 'required|boolean',
+            'id_loaitin' => 'required|integer|exists:loai_tin,id_loaitin',
+        ]);
+
+        try {
+            // Nếu có file ảnh mới được gửi lên
+            if ($request->hasFile('hinhdaidien')) {
+                // Xóa ảnh cũ trên Cloudinary (nếu có)
+                if ($tin->hinhdaidien) {
+                    MyHelper::deleteImage($tin->hinhdaidien);
+                }
+
+                // Cập nhật URL ảnh mới vào dữ liệu
+                $path = $request->file('hinhdaidien')->getRealPath();
+                $validated['hinhdaidien'] = MyHelper::uploadImage($path);
+            }
+
+            // Cập nhật thông tin món ăn
+            $tin->update($validated);
+
+            return response()->json([
+                'message' => 'Tin đã được cập nhật thành công!',
+                'tin' => $tin
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Lỗi khi cập nhật tin',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    // Xóa tin
+    public function destroy($id_tin)
+    {
+        $tin = Tin::find($id_tin);
+
+        if (!$tin) {
+            return response()->json(['message' => 'Không tìm thấy tin.'], 404);
+        }
+
+         if (BinhLuan::where('id_tin', $id_tin)->exists()) {
+            return response()->json(['message' => 'Không thể xóa! Tin đã có bình luận.'], 400);
+        }
+
+        try {
+            // Xóa ảnh cũ trên Cloudinary (nếu có)
+            if ($tin->hinhdaidien) {
+                MyHelper::deleteImage($tin->hinhdaidien);
+
+                $tin->delete();
+                return response()->json(['message' => 'Tin đã được xóa thành công!'], 200);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Lỗi khi xóa tin',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function traVeDanhSachTin(Request $request){
+        $ngaybd = $request->input('ngaybd');
+        $ngaykt = $request->input('ngaykt');
+        $getAll = $request->input('all');
+        $idTin = $request->input('id_tin');
+        $listTin = null;
+        if($ngaybd && $ngaykt){
+            $listTin = Tin::whereBetween('ngaydangtin', [$ngaybd, $ngaykt])->orderBy('ngaydangtin', 'desc')->get();
+        }
+
+        if($getAll == 1){
+            $listTin = Tin::orderBy('ngaydangtin', 'desc')->get();
+        }
+
+        if($idTin){
+            $listTin = Tin::where('id_tin', $idTin)->first();
+            if(!$listTin){
+                return response()->json(['message' => 'Tin với mã '. $idTin . ' không tồn tại']);
+            }
+        }
+
+        return response()->json($listTin, 200);
     }
 }

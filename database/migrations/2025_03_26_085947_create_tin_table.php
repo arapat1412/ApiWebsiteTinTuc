@@ -19,9 +19,9 @@ return new class extends Migration
             $table->text("noidung");
             $table->dateTime("ngaydangtin");
             $table->string("tacgia",20);
-            $table->integer("solanxem");
+            $table->integer("solanxem")->default(0);
             $table->boolean("tinhot");
-            $table->boolean("trangthai");
+            $table->boolean("trangthai")->default(true);
             $table->tinyInteger("id_loaitin")->unsigned();
             $table->foreign('id_loaitin')->references('id_loaitin')->on('loai_tin')->onUpdate('cascade')->onDelete('cascade');
 

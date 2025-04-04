@@ -16,9 +16,6 @@ Route::get('/tintuc', [TinController::class, 'danhSachTin']);
 Route::get('/chitiettin/{id}', [ChiTietTinTheoIDController::class, 'layChiTietTin']);
 
 
-
-
-
 //api nhom tin
 Route::get('nhomtin', [NhomTinController::class, 'index']);
 Route::post('themnhomtin', [NhomTinController::class, 'store']);
@@ -36,3 +33,9 @@ Route::delete('/xoaloaitin/{id}', [LoaiTinController::class, 'xoaLoaiTin']);
 Route::get('/binhluan', [BinhLuanController::class, 'getBinhLuan']);
 Route::post('/binhluan', [BinhLuanController::class, 'postBinhLuan']);
 Route::put('/binhluan/{id}', [BinhLuanController::class, 'putBinhLuan']);
+
+//api quản lý tin
+Route::post('/themtin', [TinController::class, 'store']);
+Route::put('/suatin/{id}', [TinController::class, 'update']);
+Route::delete('/xoatin/{id}', [TinController::class, 'destroy']);
+Route::get('/danhsachtin', [TinController::class, 'traVeDanhSachTin']);
