@@ -8,6 +8,9 @@ use App\Http\Controllers\LoaiTinController;
 use App\Http\Controllers\ChiTietTinTheoIDController;
 use App\Http\Controllers\ChiTietTinController;
 use App\Http\Controllers\BinhLuanController;
+use App\Http\Controllers\LoginAdminController;
+use App\Http\Controllers\ReturnBLuanTinTucController;
+
 
 
 Route::get('/trangchu', [ReturnDanhSachController::class, 'getDuLieuChoTrangChu']);
@@ -36,3 +39,9 @@ Route::delete('/xoaloaitin/{id}', [LoaiTinController::class, 'xoaLoaiTin']);
 Route::get('/binhluan', [BinhLuanController::class, 'getBinhLuan']);
 Route::post('/binhluan', [BinhLuanController::class, 'postBinhLuan']);
 Route::put('/binhluan/{id}', [BinhLuanController::class, 'putBinhLuan']);
+
+//login admin 
+Route::post('/login-admin', [LoginAdminController::class, 'login']);
+
+//bltinthucreturn
+Route::get('/tin/{id_tin}/binhluan', [ReturnBLuanTinTucController::class, 'layBinhLuanTheoTin']);
