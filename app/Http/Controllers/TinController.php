@@ -165,11 +165,11 @@ class TinController
         // Nếu có idTin → lấy bản ghi cụ thể
         if ($idTin) {
             $tin = $query->where('id_tin', $idTin)->first();
-            $loaiTin = $idLoaiTin ? LoaiTin::firstWhere('id_loaitin', $idLoaiTin) : null;
             if (!$tin) {
+            $loaiTin = $idLoaiTin ? LoaiTin::firstWhere('id_loaitin', $idLoaiTin) : null;
                 return response()->json(['message' => 'Tin với mã ' . $idTin . ' không tồn tại'. ($loaiTin ? ' trong loại tin ' . $loaiTin->ten_loaitin : '') . (($loaiTin && $ngaybd && $ngaykt) ? ' và' : '') . (($ngaybd && $ngaykt) ? ' trong khoảng '. date('d/m/Y', strtotime($ngaybd)) . ' - '. date('d/m/Y', strtotime($ngaykt)) : '')]);
             }
-            return response()->json($tin, 200);
+            $listTin = $tin;
         }
     
         // Lấy danh sách cuối cùng nếu không lọc theo idTin
