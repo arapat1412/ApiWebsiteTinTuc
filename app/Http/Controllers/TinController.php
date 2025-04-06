@@ -121,7 +121,7 @@ class TinController
             return response()->json(['message' => 'Không tìm thấy tin.'], 404);
         }
 
-         if (BinhLuan::where('id_tin', $id_tin)->exists()) {
+        if (BinhLuan::where('id_tin', $id_tin)->exists()) {
             return response()->json(['message' => 'Không thể xóa! Tin đã có bình luận.'], 400);
         }
 
@@ -141,27 +141,40 @@ class TinController
         }
     }
 
-    public function traVeDanhSachTin(Request $request){
+    public function traVeDanhSachTin(Request $request)
+    {
         $ngaybd = $request->input('ngaybd');
         $ngaykt = $request->input('ngaykt');
-        $getAll = $request->input('all');
+        $idLoaiTin = $request->input('id_loaitin');
         $idTin = $request->input('id_tin');
-        $listTin = null;
-        if($ngaybd && $ngaykt){
-            $listTin = Tin::whereBetween('ngaydangtin', [$ngaybd, $ngaykt])->orderBy('ngaydangtin', 'desc')->get();
+    
+        // Khởi tạo query
+        $query = Tin::query();
+    
+        // Lọc theo ngày nếu có
+        if ($ngaybd && $ngaykt) {
+            $query->whereDate('ngaydangtin', '>=', $ngaybd)
+                  ->whereDate('ngaydangtin', '<=', $ngaykt);
         }
-
-        if($getAll == 1){
-            $listTin = Tin::orderBy('ngaydangtin', 'desc')->get();
+    
+        // Lọc theo loại tin nếu khác 0
+        if ($idLoaiTin != 0) {
+            $query->where('id_loaitin', $idLoaiTin);
         }
-
-        if($idTin){
-            $listTin = Tin::where('id_tin', $idTin)->first();
-            if(!$listTin){
-                return response()->json(['message' => 'Tin với mã '. $idTin . ' không tồn tại']);
+    
+        // Nếu có idTin → lấy bản ghi cụ thể
+        if ($idTin) {
+            $tin = $query->where('id_tin', $idTin)->first();
+            $loaiTin = $idLoaiTin ? LoaiTin::firstWhere('id_loaitin', $idLoaiTin) : null;
+            if (!$tin) {
+                return response()->json(['message' => 'Tin với mã ' . $idTin . ' không tồn tại'. ($loaiTin ? ' trong loại tin ' . $loaiTin->ten_loaitin : '') . (($loaiTin && $ngaybd && $ngaykt) ? ' và' : '') . (($ngaybd && $ngaykt) ? ' trong khoảng '. date('d/m/Y', strtotime($ngaybd)) . ' - '. date('d/m/Y', strtotime($ngaykt)) : '')]);
             }
+            return response()->json($tin, 200);
         }
-
+    
+        // Lấy danh sách cuối cùng nếu không lọc theo idTin
+        $listTin = $query->orderBy('ngaydangtin', 'desc')->get();
+    
         return response()->json($listTin, 200);
     }
 }
