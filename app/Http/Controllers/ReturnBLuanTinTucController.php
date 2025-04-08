@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\BinhLuan;
 use Illuminate\Http\Request;
 
-class ReturnBLuanTinTucController extends Controller
+class ReturnBLuanTinTucController
 {
     /**
      * Trả về danh sách bình luận đã được duyệt của một tin tức,

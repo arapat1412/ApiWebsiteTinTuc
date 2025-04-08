@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('binh_luan', function (Blueprint $table) {
             $table->tinyInteger("id_binhluan",true,true);
-            $table->string("email",30);
+            $table->string("email",100);
             $table->dateTime("thoigian");
-            $table->string("noidung",1000);
+            $table->text("noidung");
             $table->boolean("trangthai");
             $table->tinyInteger("id_tin")->unsigned();
             $table->foreign('id_tin')->references('id_tin')->on('tin')->onUpdate('cascade')->onDelete('cascade');

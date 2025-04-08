@@ -23,7 +23,8 @@ class DatabaseSeeder extends Seeder
         ]);
         $this->call([
             LoaiTinSeeder::class,
-            TinSeeder::class
+            TinSeeder::class,
+            BinhLuanSeeder::class
         ]);
     }
 }

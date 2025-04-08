@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\QuanTriVien;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
-class LoginAdminController extends Controller
+class LoginAdminController
 {
     public function login(Request $request)
     {
@@ -14,11 +15,9 @@ class LoginAdminController extends Controller
             'matkhau' => 'required|string'
         ]);
 
-        $qtv = QuanTriVien::where('tendangnhap', $data['tendangnhap'])
-            ->where('matkhau', $data['matkhau']) // Nếu dùng hash thì dùng Hash::check
-            ->first();
+        $qtv = QuanTriVien::where('tendangnhap', $data['tendangnhap'])->first();
 
-        if (!$qtv) {
+        if (!$qtv && !Hash::check($data['matkhau'], $qtv->matkhau)) {
             return response()->json([
                 'message' => 'Đăng nhập thất bại. Sai thông tin đăng nhập.'
             ], 401);
