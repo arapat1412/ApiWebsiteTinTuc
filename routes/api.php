@@ -38,7 +38,7 @@ Route::post('/binhluan', [BinhLuanController::class, 'postBinhLuan']);
 Route::put('/binhluan/{id}', [BinhLuanController::class, 'putBinhLuan']);
 
 //login admin 
-Route::post('/login-admin', [LoginAdminController::class, 'login']);
+Route::post('/dangnhap', [LoginAdminController::class, 'login']);
 
 //bltinthucreturn
 Route::get('/tin/{id_tin}/binhluan', [ReturnBLuanTinTucController::class, 'layBinhLuanTheoTin']);
