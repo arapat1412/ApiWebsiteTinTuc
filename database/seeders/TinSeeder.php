@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Tin;
 use Illuminate\Database\Seeder;
+use App\Helpers\MyHelper;
 
 class TinSeeder extends Seeder
 {
@@ -490,7 +491,7 @@ Các diễn giả sẽ cung cấp kiến thức mới về xu hướng, ứng d�
         foreach ($danhSachTin as $tin) {
             Tin::create([
                 'tieude' => $tin[0],
-                'hinhdaidien' => $tin[1],
+                'hinhdaidien' => MyHelper::uploadImageSeed($tin[1]),
                 'mota' => $tin[2],
                 'noidung' => $tin[3],
                 'ngaydangtin' => now(),

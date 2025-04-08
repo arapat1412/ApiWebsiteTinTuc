@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\BinhLuan;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Str;
+
 use Faker\Factory as Faker;
 
 class BinhLuanSeeder extends Seeder

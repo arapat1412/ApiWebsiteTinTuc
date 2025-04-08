@@ -31,6 +31,7 @@ class TinController
         else {
             $tinTuc = Tin::all();
         }
+        
 
         return response()->json($tinTuc);
     }
@@ -173,7 +174,7 @@ class TinController
         }
     
         // Lấy danh sách cuối cùng nếu không lọc theo idTin
-        $listTin = $query->orderBy('ngaydangtin', 'desc')->get();
+        $listTin = $query->orderBy('tinhot', 'desc')->orderBy('ngaydangtin', 'desc')->get();
     
         return response()->json($listTin, 200);
     }
