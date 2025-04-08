@@ -174,7 +174,7 @@ class TinController
         }
     
         // Lấy danh sách cuối cùng nếu không lọc theo idTin
-        $listTin = $query->orderBy('tinhot', 'desc')->orderBy('ngaydangtin', 'desc')->get();
+        $listTin = $query->orderBy('ngaydangtin', 'desc')->orderBy('tinhot', 'desc')->get();
     
         return response()->json($listTin, 200);
     }
