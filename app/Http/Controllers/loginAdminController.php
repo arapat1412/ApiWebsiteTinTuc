@@ -17,7 +17,7 @@ class LoginAdminController
 
         $qtv = QuanTriVien::where('tendangnhap', $data['tendangnhap'])->first();
 
-        if (!$qtv && !Hash::check($data['matkhau'], $qtv->matkhau)) {
+        if (!Hash::check($data['matkhau'], $qtv->matkhau)) {
             return response()->json([
                 'message' => 'Đăng nhập thất bại. Sai thông tin đăng nhập.'
             ], 401);
