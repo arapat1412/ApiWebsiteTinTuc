@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NhomTinController;
 use App\Http\Controllers\LoaiTinController;
 use App\Http\Controllers\ChiTietTinTheoIDController;
-use App\Http\Controllers\ChiTietTinController;
 use App\Http\Controllers\BinhLuanController;
 use App\Http\Controllers\LoginAdminController;
 use App\Http\Controllers\ReturnBLuanTinTucController;

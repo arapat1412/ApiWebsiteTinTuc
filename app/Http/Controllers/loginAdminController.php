@@ -10,6 +10,7 @@ class LoginAdminController
 {
     public function login(Request $request)
     {
+        
         $data = $request->validate([
             'tendangnhap' => 'required|string',
             'matkhau' => 'required|string'
