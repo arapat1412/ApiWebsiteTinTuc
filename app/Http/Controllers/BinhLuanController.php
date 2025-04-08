@@ -38,9 +38,9 @@ class BinhLuanController
     ]);
 
     // Lấy danh sách bình luận theo khoảng thời gian
-    $binhLuans = BinhLuan::whereBetween('thoigian', [$request->start_date, $request->end_date])
+    $binhLuans = ($request->start_date && $request->end_date) ? BinhLuan::whereBetween('thoigian', [$request->start_date, $request->end_date])
         ->orderBy('thoigian', 'desc')
-        ->get();
+        ->get() : BinhLuan::all();
 
     return response()->json(['data' => $binhLuans], 200);
 }
