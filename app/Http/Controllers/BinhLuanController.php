@@ -40,22 +40,19 @@ class BinhLuanController
         $query = BinhLuan::query();
 
         if ($request->filled('start_date') && $request->filled('end_date')) {
-            $query->whereBetween('thoigian', [$request->start_date, $request->end_date]);
+            $start = $request->start_date . ' 00:00:00';
+            $end = $request->end_date . ' 23:59:59';
+            $query->whereBetween('thoigian', [$start, $end]);
         }
 
         $binhLuans = $query->orderBy('thoigian', 'desc')->get();
 
         return response()->json(['data' => $binhLuans], 200);
     }
-    
-    //hàm sửa trong trái bình luận
-    public function putBinhLuan(Request $request, $id)
-    {
-        // Validate dữ liệu đầu vào
-        $request->validate([
-            'trangthai' => 'required|boolean'
-        ]);
 
+    //hàm sửa trong trái bình luận
+    public function putBinhLuan($id)
+    {
         // Tìm bình luận theo ID
         $binhLuan = BinhLuan::find($id);
 
@@ -65,9 +62,9 @@ class BinhLuanController
         }
 
         // Cập nhật trạng thái
-        $binhLuan->trangthai = $request->trangthai;
+        $binhLuan->trangthai = $binhLuan->trangthai ? false : true;
         $binhLuan->save();
 
-        return response()->json(['message' => 'Cập nhật trạng thái bình luận thành công!', 'data' => $binhLuan], 200);
+        return response()->json(['message' => $binhLuan->trangthai ? 'bình luận đã được duyệt' : 'bỏ duyệt bình luận thành công'], 200);
     }
 }
