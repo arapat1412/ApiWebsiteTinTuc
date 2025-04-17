@@ -26,7 +26,7 @@ class BinhLuanController
             'id_tin' => $validated['id_tin'],
         ]);
 
-        return response()->json(['message' => 'Bình luận được tạo thành công!', 'data' => $binhLuan], 201);
+        return response()->json(['message' => 'Bình luận đã được gửi và đang chờ quản trị viên duyệt!'], 201);
     }
     //ds bình luận trong khoảng thời gian start_date và end_date là ngày nhập vào
     public function getBinhLuan(Request $request)
