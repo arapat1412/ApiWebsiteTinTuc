@@ -10,7 +10,8 @@ use App\Http\Controllers\BinhLuanController;
 use App\Http\Controllers\LoginAdminController;
 use App\Http\Controllers\ReturnBLuanTinTucController;
 
-
+use App\Http\Controllers\TimKiemNangCaoController;
+use App\Http\Controllers\CapNhatSLXemController;
 
 Route::get('/trangchu', [ReturnDanhSachController::class, 'getDuLieuChoTrangChu']);
 //api trả về ds tin tức theo id nhóm tin hoặc loại tin
@@ -48,3 +49,10 @@ Route::post('/themtin', [TinController::class, 'store']);
 Route::put('/suatin/{id}', [TinController::class, 'update']);
 Route::delete('/xoatin/{id}', [TinController::class, 'destroy']);
 Route::get('/danhsachtin', [TinController::class, 'traVeDanhSachTin']);
+
+
+
+/// api tim kiem va capnhatslxem
+
+Route::get('/tim-kiem-nang-cao', [TimKiemNangCaoController::class, 'timKiem']);
+Route::post('/cap-nhat-xem/{id}', [CapNhatSLXemController::class, 'capNhat']);
