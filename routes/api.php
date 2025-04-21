@@ -55,4 +55,4 @@ Route::get('/danhsachtin', [TinController::class, 'traVeDanhSachTin']);
 /// api tim kiem va capnhatslxem
 
 Route::get('/tim-kiem-nang-cao', [TimKiemNangCaoController::class, 'timKiem']);
-Route::post('/cap-nhat-xem/{id}', [CapNhatSLXemController::class, 'capNhat']);
+Route::get('/cap-nhat-xem-tin/{id}', [CapNhatSLXemController::class, 'capNhatLuotXem']);

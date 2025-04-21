@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Tin;
 
-class TimKiemNangCaoController extends Controller
+class TimKiemNangCaoController
 {
     public function timKiem(Request $request)
     {
@@ -16,8 +16,8 @@ class TimKiemNangCaoController extends Controller
             $keyword = $request->keyword;
             $query->where(function ($q) use ($keyword) {
                 $q->where('tieude', 'LIKE', "%$keyword%")
-                  ->orWhere('mota', 'LIKE', "%$keyword%")
-                  ->orWhere('noidung', 'LIKE', "%$keyword%");
+                    ->orWhere('mota', 'LIKE', "%$keyword%")
+                    ->orWhere('noidung', 'LIKE', "%$keyword%");
             });
         }
 
@@ -33,11 +33,16 @@ class TimKiemNangCaoController extends Controller
             });
         }
 
-        // Lọc tin hot
-        if ($request->has('tinhot')) {
-            $query->where('tinhot', $request->tinhot);
+        // Lọc theo khoảng thời gian nếu có cả ngaybd và ngaykt
+        if ($request->has(['ngaybd', 'ngaykt'])) {
+            $query->whereBetween('ngaydangtin', [$request->ngaybd, $request->ngaykt]);
         }
 
-        return response()->json($query->get());
+        // Lấy danh sách cuối cùng
+        $listTin = $query->orderBy('ngaydangtin', 'desc')
+            ->orderBy('tinhot', 'desc')
+            ->get();
+
+        return response()->json($listTin, 200);
     }
 }
