@@ -7,7 +7,7 @@ use App\Models\Tin;
 
 class CapNhatSLXemController
 {
-    public function capNhat($id)
+    public function capNhatLuotXem($id)
     {
         $tin = Tin::find($id);
 
