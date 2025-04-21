@@ -9,7 +9,7 @@ class TimKiemNangCaoController
 {
     public function timKiemNangCao(Request $request)
     {
-        $query = Tin::with(['loaiTin', 'nhomTin']);
+        $query = Tin::query();
 
         // Tìm kiếm fulltext
         if ($request->has('titleOrContent')) {
@@ -23,7 +23,7 @@ class TimKiemNangCaoController
 
         // Lọc theo id_nhomtin (thông qua quan hệ loaiTin -> nhomTin)
         if ($request->has('newsGroup')) {
-            $query->whereHas('nhomTin', function ($q) use ($request) {
+            $query->whereHas('loaiTin', function ($q) use ($request) {
                 $q->where('id_nhomtin', $request->newsGroup);
             });
         }
