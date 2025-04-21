@@ -54,5 +54,5 @@ Route::get('/danhsachtin', [TinController::class, 'traVeDanhSachTin']);
 
 /// api tim kiem va capnhatslxem
 
-Route::get('/tim-kiem-nang-cao', [TimKiemNangCaoController::class, 'timKiem']);
+Route::get('/tim-kiem-nang-cao', [TimKiemNangCaoController::class, 'timKiemNangCao']);
 Route::get('/cap-nhat-xem-tin/{id}', [CapNhatSLXemController::class, 'capNhatLuotXem']);

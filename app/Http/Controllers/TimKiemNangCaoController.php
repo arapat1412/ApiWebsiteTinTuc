@@ -7,7 +7,7 @@ use App\Models\Tin;
 
 class TimKiemNangCaoController
 {
-    public function timKiem(Request $request)
+    public function timKiemNangCao(Request $request)
     {
         $query = Tin::with(['loaiTin', 'nhomTin']);
 
