@@ -14,6 +14,7 @@ class ReturnDanhSachController
         $loaitin = LoaiTin::where('trangthai', 1)->select('id_loaitin', 'ten_loaitin', 'id_nhomtin')->get();
         $tin = Tin::where('trangthai', 1)
             ->orderBy('ngaydangtin', 'desc')
+            ->orderBy('tinhot', 'desc')
             ->select([
                 'id_tin',
                 'tieude',

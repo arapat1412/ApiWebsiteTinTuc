@@ -14,25 +14,24 @@ class TinController
     {
         $idNhomTin = $request->input('id_nhomtin');
         $idLoaiTin = $request->input('id_loaitin');
-
-        // Nếu có id_nhomtin, lấy tất cả loại tin thuộc nhóm đó
+    
+        $query = Tin::query(); // tạo query builder ban đầu
+    
+        // Nếu có id_nhomtin, lọc theo nhóm tin
         if ($idNhomTin) {
-            // Lấy tất cả loai_tin thuộc nhom_tin với id_nhomtin
             $loaiTins = LoaiTin::where('id_nhomtin', $idNhomTin)->pluck('id_loaitin');
-
-            // Lọc các tin theo id_loaitin trong danh sách loai_tin
-            $tinTuc = Tin::whereIn('id_loaitin', $loaiTins)->get();
+            $query->whereIn('id_loaitin', $loaiTins);
         }
-        // Nếu có id_loaitin, lọc tin tức theo loại tin
-        elseif ($idLoaiTin) {
-            $tinTuc = Tin::where('id_loaitin', $idLoaiTin)->get();
+        // Nếu có id_loaitin (nhưng không có id_nhomtin), lọc theo loại tin
+        else if ($idLoaiTin) {
+            $query->where('id_loaitin', $idLoaiTin);
         }
-        // Nếu không có tham số nào, lấy tất cả tin tức
-        else {
-            $tinTuc = Tin::all();
-        }
-        
-
+    
+        // Sắp xếp kết quả: ngày đăng mới nhất trước, tin hot ưu tiên
+        $tinTuc = $query->orderBy('ngaydangtin', 'desc')
+                         ->orderBy('tinhot', 'desc')
+                         ->get();
+    
         return response()->json($tinTuc);
     }
 
